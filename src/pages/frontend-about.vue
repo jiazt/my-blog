@@ -7,19 +7,19 @@
                         <h3 class="about-title">关于作者</h3>
                         <div class="flex-item">
                             <div class="flex-label">姓名:</div>
-                            <div class="flex-content">林岑影</div>
+                            <div class="flex-content">贾振天</div>
                         </div>
                         <div class="flex-item">
                             <div class="flex-label">年龄:</div>
-                            <div class="flex-content">1987.09</div>
+                            <div class="flex-content">1995.04</div>
                         </div>
                         <div class="flex-item">
                             <div class="flex-label">职业:</div>
-                            <div class="flex-content">前端开发</div>
+                            <div class="flex-content">前端node</div>
                         </div>
                         <div class="flex-item">
                             <div class="flex-label">Github:</div>
-                            <div class="flex-content"><a href="https://github.com/lincenying" target="_blank">@lincenying</a></div>
+                            <div class="flex-content"><a href="https://github.com/jiazt" target="_blank">@jiazhentian</a></div>
                         </div>
                         <div class="flex-item">
                             <div class="flex-label">技能:</div>
@@ -33,7 +33,7 @@
                                     <li>Gulp</li>
                                     <li>WebPack</li>
                                     <li>jQuery</li>
-                                    <li>PHP</li>
+                                    <li>webGL</li>
                                 </ul>
                             </div>
                         </div>
@@ -75,8 +75,8 @@ export default {
     },
     metaInfo () {
         return {
-            title: '关于 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '关于 -威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }
