@@ -2,8 +2,8 @@
  * @file render server
  * @author lincenying(lincenying@qq.com)
  */
-var jwt = require('jsonwebtoken')
-var config = require('./server/config')
+const jwt = require('jsonwebtoken')
+const config = require('./server/config')
 
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
@@ -142,7 +142,7 @@ const checkAdminToken = (req, res) => {
             })
         })
     }
-    return false
+    return Promise.resolve(false)
 }
 
 const checkUserToken = (req, res) => {
@@ -164,22 +164,24 @@ const checkUserToken = (req, res) => {
             })
         })
     }
-    return '/'
+    return Promise.resolve('/')
 }
 
-const checkAdmin = (req, res) => {
+const checkAdmin = async (req, res) => {
     if (req.url === '/backend' || req.url === '/backend/') {
-        return checkAdminToken(req, res) ? '/backend/article/list' : ''
+        const isAdmin = await checkAdminToken(req, res)
+        return isAdmin ? '/backend/article/list' : ''
     } else if (req.url.indexOf('/backend/') > -1) {
-        return checkAdminToken(req, res) ? '' : '/backend'
+        const isAdmin = await checkAdminToken(req, res)
+        return isAdmin ? '' : '/backend'
     } else if (req.url.indexOf('/user/') > -1) {
-        return checkUserToken(req, res)
+        return await checkUserToken(req, res)
     }
     return ''
 }
 
-function render(req, res) {
-    const backUrl = checkAdmin(req, res)
+const render = async (req, res) => {
+    const backUrl = await checkAdmin(req, res)
     if (backUrl) {
         return res.redirect(backUrl)
     }
@@ -204,7 +206,7 @@ function render(req, res) {
 
     const context = {
         // default title
-        title: '威震天',
+        title: 'M.M.F 小屋',
         url: req.url,
         cookies: req.cookies,
     }
