@@ -1,0 +1,67 @@
+<template>
+    <view class="actions-wrap">
+        <view @tap="handleLike" class="action-item {{ item.like_status ? 'active' : '' }}"><view class="icon {{ item.like_status ? 'icon-action-voteup-active' : 'icon-action-voteup' }}"></view><text class="text">{{ item.like}} 赞</text></view>
+        <view class="action-item"><view class="icon icon-action-comment"></view><text class="text">{{ item.comment_count }} 评论</text></view>
+        <view class="action-item action-item-fav"><view class="icon icon-action-fav"></view><text class="text">{{ item.visit }} 浏览</text></view>
+        <!-- <view open-type="share" class="action-item"><view class="icon icon-action-share"></view><text class="text">分享</text></view> -->
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+import api from '@/api'
+import config from '@/config'
+import { modifyLikeStatus, modifyLikeStatusByItem } from '../store/actions'
+@connect({
+
+}, {
+    modifyLikeStatus, modifyLikeStatusByItem
+})
+
+export default class FeedActions extends wepy.component {
+    props = {
+        item: {
+            type: [Object],
+            default: {},
+            twoWay: true
+        }
+    }
+    data = {}
+    events = {
+    }
+    watch = {
+    }
+    methods = {
+        async handleLike() {
+            const username = wepy.getStorageSync('username') || ''
+            if (!username) {
+                wepy.showToast({
+                    title: '请先授权登录...',
+                })
+                return
+            }
+            let url = 'frontend/like'
+            if (this.item.like_status) url = 'frontend/unlike'
+            const { code, message } = await api.get(url, { id: this.item._id })
+            if (code === 200) {
+                wepy.showToast({
+                    title: this.item.like_status ? `取消赞成功...` : '点赞成功...',
+                })
+                const obj = {
+                    id: this.item._id,
+                    likeStatus: !this.item.like_status
+                }
+                await this.methods.modifyLikeStatus(obj)
+                await this.methods.modifyLikeStatusByItem(obj)
+            }
+        }
+    }
+    onLoad () {
+    }
+}
+</script>
+
+<style lang="less">
+@import url(../assets/less/actions.less);
+</style>

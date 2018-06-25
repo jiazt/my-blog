@@ -1,0 +1,100 @@
+<template>
+<view class="frontend">
+    <view wx:if="{{isLoad}}" class="main wrap app-view">
+        <view class="card card-question-head">
+            <view class="question-content">
+                <view class="question-title">
+                    <text class="question-title-link router-link-exact-active router-link-active">{{ item.title }}</text>
+                </view>
+            </view>
+        </view>
+        <view class="card card-answer">
+            <view class="answer-content">
+                <htmlParser :parserName="names" :parserContent.sync="content"/>
+            </view>
+            <feedActions :item.sync="item"></feedActions>
+        </view>
+        <!-- <Comments :thisid.sync="thisid"></Comments> -->
+    </view>
+    <view wx:else class="main wrap app-view">
+        <view class="home-feeds cards-wrap">
+            <Loading></Loading>
+        </view>
+    </view>
+</view>
+</template>
+
+<script>
+/* eslint-disable no-inline-comments */
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+import globalMixin from '../mixins/global'
+import { getArticle } from '../store/actions'
+import htmlParser from '@/components/htmlParser'
+import feedActions from '@/components/feed-actions'
+// import Comments from '@/components/comments'
+import Loading from '@/components/loading'
+
+@connect({
+    item(state) {
+        return state.article.item
+    },
+    isLoad(state) {
+        return state.article.isLoad
+    }
+}, {
+    getArticle
+})
+
+export default class Topics extends wepy.page {
+    config = {
+        navigationBarTitleText: 'M.M.F 小屋'
+    }
+    components = {
+        htmlParser,
+        feedActions,
+        // Comments,
+        Loading,
+    }
+    mixins = [globalMixin]
+    data = {
+        names: 'myHtmlParserKiner',
+        content: '',
+        thisid: '',
+    }
+    computed = {
+
+    }
+    methods = {
+    }
+    async onLoad(options) {
+        wepy.showLoading({
+            mask: true,
+            title: '数据加载中...',
+        })
+        const id = options.id
+        await this.methods.getArticle({
+            id
+        })
+        this.content = this.item.content
+        this.thisid = this.item._id
+        this.$apply()
+        this.$invoke('htmlParser', 'htmlParserNotice')
+        // this.$invoke('Comments', 'handleLoadMore', '1')
+        wepy.hideLoading()
+    }
+    onShareAppMessage () {
+        return {
+            title: this.item.title,
+            desc: this.item.title,
+            path: '/pages/article?id=' + this.item._id
+        }
+    }
+}
+</script>
+
+<style lang="less">
+@import url(../assets/less/details.less);
+@import url(../assets/less/markdown.less);
+@import url(../assets/less/hljs.less);
+</style>

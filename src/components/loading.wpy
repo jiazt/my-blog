@@ -1,0 +1,29 @@
+<style lang="less">
+@import url(../assets/less/feed.less);
+</style>
+
+<template>
+<view class="card feed">
+    <view class="feed-content">
+        数据加载中...
+    </view>
+</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Feed extends wepy.component {
+    props = {
+    }
+    components = {
+    }
+    data = {}
+    events = {
+    }
+    watch = {
+    }
+    methods = {
+    }
+}
+</script>

@@ -1,0 +1,48 @@
+<template>
+<repeat for="{{lists}}" key="index" index="index" item="item">
+    <view class="card feed">
+        <view @tap="navToArticle({{item}})" class="feed-content">
+            <text class="feed-time">{{ item.update_date }}</text>
+            <view class="feed-source">来自分类 <text class="feed-minor-link">{{ item.category_name }}</text></view>
+            <view class="feed-main-link-wrap"><text class="feed-main-link">{{ item.title }}</text></view>
+            <view class="feed-desc-wrap">
+                <view class="feed-article-content markdown-body">{{ item.content }}</view>
+            </view>
+        </view>
+        <feedActions :item="item"></feedActions>
+    </view>
+</repeat>
+</template>
+
+<script>
+import wepy from 'wepy'
+import feedActions from './feed-actions'
+
+export default class Feed extends wepy.component {
+    props = {
+        lists: {
+            type: [Array],
+            default: []
+        }
+    }
+    components = {
+        feedActions
+    }
+    data = {}
+    events = {
+    }
+    watch = {
+    }
+    methods = {
+        navToArticle(item) {
+            wx.navigateTo({
+                url: '/pages/article?id=' + item._id
+            })
+        }
+    }
+}
+</script>
+<style lang="less">
+@import url(../assets/less/feed.less);
+@import url(../assets/less/actions.less);
+</style>
