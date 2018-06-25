@@ -1,0 +1,87 @@
+<template>
+<view class="frontend">
+    <view class="main wrap app-view">
+        <view wx:if="{{isLoad}}" class="home-feeds cards-wrap">
+            <Feed :lists.sync="lists"></Feed>
+            <view wx:if="{{hasNext}}" class="load-more-wrap">
+                <view @tap="handleLoadMore" class="load-more">更多<view class="icon icon-circle-loading"></view></view>
+            </view>
+            <view wx:else class="load-more-no-next">我是有底线的好吗...</view>
+        </view>
+        <view wx:else class="home-feeds cards-wrap">
+            <Loading></Loading>
+        </view>
+    </view>
+</view>
+</template>
+
+<script>
+/* eslint-disable no-inline-comments */
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+import globalMixin from '../mixins/global'
+import { getTopicsByVisit } from '../store/actions'
+import Feed from '@/components/feed'
+
+@connect({
+    page(state) {
+        return state.topicsByVisit.page
+    },
+    hasNext(state) {
+        return state.topicsByVisit.hasNext
+    },
+    lists(state) {
+        return state.topicsByVisit.lists
+    },
+    total(state) {
+        return state.topicsByVisit.total
+    },
+    isLoad(state) {
+        return state.topicsByVisit.isLoad
+    }
+}, {
+    getTopicsByVisit
+})
+
+export default class TopicsByVisit extends wepy.page {
+    config = {
+        navigationBarTitleText: '热门 - M.M.F 小屋'
+    }
+    components = {
+        Feed
+    }
+    mixins = [globalMixin]
+    data = {
+
+    }
+    computed = {
+
+    }
+    methods = {
+        handleLoadMore() {
+            this.methods.getTopicsByVisit({ page: this.page })
+        }
+    }
+    events = {
+
+    }
+    async onLoad() {
+        wepy.showLoading({
+            mask: true,
+            title: '数据加载中...',
+        })
+        await this.methods.getTopicsByVisit({ page: 1 })
+        wepy.hideLoading()
+    }
+    onShareAppMessage () {
+        return {
+            title: 'MMF小屋',
+            desc: 'MMF小屋!',
+            path: '/pages/topics-by-visit'
+        }
+    }
+}
+</script>
+<style lang="less">
+@import url(../assets/less/load-more.less);
+</style>

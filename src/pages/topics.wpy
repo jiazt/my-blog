@@ -1,0 +1,98 @@
+<template>
+<view class="frontend">
+    <view class="main wrap app-view">
+        <view wx:if="{{isLoad}}" class="home-feeds cards-wrap">
+            <Feed :lists.sync="lists"></Feed>
+            <view wx:if="{{hasNext}}" class="load-more-wrap"><view @tap="handleLoadMore" class="load-more">更多<view class="icon icon-circle-loading"></view></view></view>
+            <view wx:else class="load-more-no-next">我是有底线的好吗...</view>
+        </view>
+        <view wx:else class="home-feeds cards-wrap">
+            <Loading></Loading>
+        </view>
+    </view>
+</view>
+</template>
+
+<script>
+/* eslint-disable no-inline-comments */
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+import globalMixin from '../mixins/global'
+import api from '../api'
+import { getTopics, setGlobal } from '../store/actions'
+import Feed from '@/components/feed'
+import Loading from '@/components/loading'
+
+@connect({
+    page(state) {
+        return state.topics.page
+    },
+    hasNext(state) {
+        return state.topics.hasNext
+    },
+    lists(state) {
+        return state.topics.lists
+    },
+    total(state) {
+        return state.topics.total
+    },
+    isLoad(state) {
+        return state.topics.isLoad
+    }
+}, {
+    getTopics, setGlobal
+})
+
+export default class Topics extends wepy.page {
+    config = {
+        navigationBarTitleText: 'M.M.F 小屋'
+    }
+    components = {
+        Feed,
+        Loading
+    }
+    mixins = [globalMixin]
+    data = {
+
+    }
+    computed = {
+
+    }
+    methods = {
+        handleLoadMore() {
+            this.methods.getTopics({ page: this.page })
+        }
+    }
+    events = {
+
+    }
+    async onLoad() {
+        let userinfo
+        wepy.showLoading({
+            mask: true,
+            title: '数据加载中...',
+        })
+        try {
+            userinfo = await api.login()
+            this.methods.setGlobal(userinfo)
+        } catch (e) {
+            wepy.showModal({
+                title: '提示',
+                content: `用户登录失败。${e.message}`
+            })
+        }
+        await this.methods.getTopics({ page: 1 })
+        wepy.hideLoading()
+    }
+    onShareAppMessage () {
+        return {
+            title: 'MMF小屋',
+            desc: 'MMF小屋!',
+            path: '/pages/topics'
+        }
+    }
+}
+</script>
+<style lang="less">
+@import url(../assets/less/load-more.less);
+</style>

@@ -1,0 +1,106 @@
+.feed {
+    background: #fff;
+    .feed-content {
+        font-size: 15px;
+        padding: 25px;
+        color: #999;
+    }
+    .feed-time {
+        float: right;
+        font-size: 14px;
+    }
+    .feed-minor-link {
+        color: #3e4545;
+    }
+    .feed-source+.feed-main-link-wrap {
+        margin-top: 8px;
+    }
+    .feed-main-link-wrap {
+        font-size: 0;
+        & + .feed-desc-wrap {
+            margin-top: 10px;
+        }
+    }
+    .feed-main-link {
+        font-size: 17px;
+        font-weight: bold;
+        color: #3aced5;
+        line-height: 1.32;
+        &:hover {
+            opacity: .8;
+        }
+    }
+    .feed-article-wrap {
+        margin-top: 12px;
+        margin-bottom: -4px;
+    }
+    &.feed-feature {
+        height: 240px;
+        overflow: hidden;
+        .feed-article-wrap {
+            margin-top: 8px;
+        }
+    }
+    .feed-feature-cover {
+        background-size: cover;
+        background-position: center;
+        width: 240px;
+        height: 240px;
+        float: left;
+        margin-right: 25px;
+    }
+    .feed-article-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+        background-size: cover;
+        background-position: center;
+        float: left;
+        margin-right: 18px;
+    }
+    .feed-article-author+.feed-article-content {
+        margin-top: 8px;
+    }
+    .feed-article-author-name {
+        color: #3e4545;
+        font-weight: bold;
+        margin-left: 12px;
+    }
+    .feed-article-author-bio {
+        margin-left: 10px;
+    }
+    .feed-article-author-avatar-image {
+        width: 25px;
+        height: 25px;
+        border-radius: 13px;
+        vertical-align: -7px;
+    }
+    .feed-article-content {
+        color: #3e4545;
+        line-height: 25px;
+        display: block;
+        max-height: 125px;
+        overflow: hidden;
+        &:hover {
+            .feed-view-more-text {
+                background: #def8f9;
+            }
+        }
+    }
+    .feed-view-more-text {
+        color: #3aced5;
+        display: inline-block;
+        border-radius: 4px;
+        font-size: 15px;
+        padding: 0 4px;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+    .profile-item {
+        margin-top: 12px;
+        .profile-item-content {
+            margin-left: 15px;
+            float: left;
+        }
+    }
+}

@@ -1,0 +1,116 @@
+.card-question-head {
+    .topic-link-item {
+        height: 32px;
+        line-height: 32px;
+        background: #effcfc;
+        border: 1px solid #99e8ed;
+        color: #3aced5;
+        border-radius: 18px;
+        padding: 0 12px;
+        display: inline-block;
+        font-size: 14px;
+        &:hover {
+            background: #54d9e0;
+            border-color: #54d9e0;
+            color: white;
+        }
+        & + .question-title {
+            margin-top: 10px;
+        }
+    }
+    .question-title {
+        font-size: 22px;
+    }
+    .question-title-link {
+        color: #3aced5;
+        &:hover {
+            opacity: .8;
+        }
+    }
+    .question-content {
+        padding: 25px;
+    }
+    .question-meta {
+        margin-top: 12px;
+        font-size: 14px;
+        color: #bac1c2;
+        display: inline-block;
+        line-height: 1;
+    }
+    .question-desc {
+        margin-top: 8px;
+    }
+    .question-actions {
+        border-top: 1px solid #eef2f2;
+        height: 48px;
+        font-size: 0;
+    }
+}
+
+.card-answer {
+    .answer-content {
+        padding: 25px;
+        font-size: 16px;
+        view {
+            word-break:break-all;
+            overflow:auto;
+        }
+        .article-content {
+            word-wrap: break-word;
+            img {
+                max-width: 100%;
+            }
+            p+p, p+img, img+p {
+                margin-top: 1em;
+            }
+            p+.about-title {
+                padding-top: 10px;
+            }
+        }
+    }
+    .author-link {
+        display: block;
+    }
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        float: left;
+        margin-right: 15px;
+    }
+    .author-name-wrap {
+        font-size: 17px;
+        color: #3e4545;
+        margin-top: -1px;
+    }
+    .author-name {
+        font-weight: bold;
+    }
+    .author-bio {
+        color: #bac1c2;
+        margin-left: 12px;
+    }
+
+    .voters-info {
+        margin-top: 4px;
+        color: #818c8c;
+        font-size: 15px;
+    }
+
+    .voter-item {
+        color: #818c8c;
+    }
+
+    .voter-item:hover {
+        color: #3aced5;
+    }
+
+    .follow-btn {
+        float: right;
+    }
+    .article-content-meta {
+        font-size: 14px;
+        color: #bac1c2;
+        margin-top: 12px;
+        display: inline-block;
+    }
+}
