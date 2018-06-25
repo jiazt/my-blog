@@ -1,20 +1,36 @@
+import Vue from 'vue'
+import ls from 'store2'
 import toastr from 'toastr'
+
 toastr.options.positionClass = 'toast-top-center'
 
-function pluralize(time, label) {
-    return time + label
+export const inBrowser = typeof window !== 'undefined'
+
+export const ua = () => {
+    const userAgentInfo = inBrowser ? navigator.userAgent : ''
+    const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPod']
+    let flag = 'PC'
+    for (let vv = 0; vv < Agents.length; vv++) {
+        if (userAgentInfo.indexOf(Agents[vv]) > 0) {
+            flag = Agents[vv]
+            break
+        }
+    }
+    return flag
 }
 
-export const setMessage = config => {
-    let content, type
-    if (typeof config === 'string') {
-        content = config
-        type = 'error'
-    } else {
-        content = config.content
-        type = config.type
+export const ssp = path => {
+    if (!inBrowser) return
+    const clientHeight = document.documentElement.clientHeight,
+        scrollTop = ls.get(path)
+    if (scrollTop) {
+        Vue.nextTick().then(() => {
+            if (document.body.clientHeight >= scrollTop + clientHeight) {
+                window.scrollTo(0, scrollTop)
+            }
+            ls.remove(path)
+        })
     }
-    toastr[type](content)
 }
 
 export const strlen = str => {
@@ -29,28 +45,18 @@ export const strlen = str => {
     return realLength
 }
 
-export function timeAgo(time) {
-    const preg = /^[\d]+$/
-    const timestamp = preg.test(time)
-    if (!timestamp) {
-        const tmp = Date.parse(time)
-        time = tmp / 1000
-    }
-    const between = Date.now() / 1000 - Number(time)
-    if (between < 60) {
-        return '刚刚'
-    } else if (between < 3600) {
-        return pluralize(parseInt(between / 60, 10), ' 分钟前')
-    } else if (between < 86400) {
-        return pluralize(parseInt(between / 3600, 10), ' 小时前')
-    }
-    return pluralize(parseInt(between / 86400, 10), ' 天前')
+export const sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const timeYmd = timestamp => {
-    var time = new Date(timestamp * 1000)
-    var year = time.getFullYear()
-    var month = time.getMonth() + 1
-    var date = time.getDate()
-    return year + '-' + (month < 10 ? '0' + month : month) + '-' + (date < 10 ? '0' + date : date)
+export const showMsg = message => {
+    let content, type
+    if (typeof message === 'string') {
+        content = message
+        type = 'error'
+    } else {
+        content = message.content
+        type = message.type
+    }
+    toastr[type](content)
 }

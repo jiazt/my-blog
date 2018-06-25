@@ -1,5 +1,5 @@
-node_modules/*
-.eslintrc.js
-dist/
 build/*.js
 config/*.js
+static/**/*.js
+dist/**/*.js
+dist/**/*.css
