@@ -1,13 +1,16 @@
 import axios from 'axios'
 import qs from 'qs'
-import {createStore} from '../store'
 import config from './config-client'
+import { showMsg } from '~utils'
 
-axios.interceptors.request.use(config => {
-    return config
-}, error => {
-    return Promise.reject(error)
-})
+axios.interceptors.request.use(
+    config => {
+        return config
+    },
+    error => {
+        return Promise.reject(error)
+    }
+)
 
 axios.interceptors.response.use(response => response, error => Promise.resolve(error.response))
 
@@ -30,7 +33,7 @@ function checkCode(res) {
     } else if (res.data.code === -400) {
         window.location.href = '/'
     } else if (res.data.code !== 200) {
-        createStore().dispatch('global/showMsg', res.data.message)
+        showMsg(res.data.message)
     }
     return res
 }
@@ -46,7 +49,9 @@ export default {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             }
-        }).then(checkStatus).then(checkCode)
+        })
+            .then(checkStatus)
+            .then(checkCode)
     },
     get(url, params) {
         return axios({
@@ -57,6 +62,8 @@ export default {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
-        }).then(checkStatus).then(checkCode)
+        })
+            .then(checkStatus)
+            .then(checkCode)
     }
 }

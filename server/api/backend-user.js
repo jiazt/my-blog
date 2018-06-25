@@ -1,21 +1,16 @@
-var md5 = require('md5')
-var fs = require('fs')
-var moment = require('moment')
-var jwt = require('jsonwebtoken')
+const md5 = require('md5')
+const fs = require('fs')
+const moment = require('moment')
+const jwt = require('jsonwebtoken')
 
-var mongoose = require('../mongoose')
-var Admin = mongoose.model('Admin')
-var fsExistsSync = require('../utils').fsExistsSync
-var config = require('../config')
-var md5Pre = config.md5Pre
-var secret = config.secretServer
+const mongoose = require('../mongoose')
+const Admin = mongoose.model('Admin')
+const fsExistsSync = require('../utils').fsExistsSync
+const config = require('../config')
+const md5Pre = config.md5Pre
+const secret = config.secretServer
 const general = require('./general')
-
-const list = general.list
-const item = general.item
-const modify = general.modify
-const deletes = general.deletes
-const recover = general.recover
+const { list, item, modify, deletes, recover } = general
 
 /**
  * 获取管理员列表
@@ -47,9 +42,8 @@ exports.getItem = (req, res) => {
  * @return {[type]}       [description]
  */
 exports.login = (req, res) => {
-    var json = {},
-        password = req.body.password,
-        username = req.body.username
+    let json = {}
+    const { password, username } = req.body
     if (username === '' || password === '') {
         json = {
             code: -200,
@@ -61,31 +55,33 @@ exports.login = (req, res) => {
         username,
         password: md5(md5Pre + password),
         is_delete: 0
-    }).then(result => {
-        if (result) {
-            var id = result._id
-            var remember_me = 2592000000
-            username = encodeURI(username)
-            var token = jwt.sign({ id, username }, secret, { expiresIn: 60*60*24*30 })
-            res.cookie('b_user', token, { maxAge: remember_me })
-            res.cookie('b_userid', id, { maxAge: remember_me })
-            res.cookie('b_username', username, { maxAge: remember_me })
-            return res.json({
-                code: 200,
-                message: '登录成功',
-                data: token
-            })
-        }
-        return res.json({
-            code: -200,
-            message: '用户名或者密码错误'
-        })
-    }).catch(err => {
-        res.json({
-            code: -200,
-            message: err.toString()
-        })
     })
+        .then(result => {
+            if (result) {
+                const _username = encodeURI(username)
+                const id = result._id
+                const remember_me = 2592000000
+                const token = jwt.sign({ id, username: _username }, secret, { expiresIn: 60 * 60 * 24 * 30 })
+                res.cookie('b_user', token, { maxAge: remember_me })
+                res.cookie('b_userid', id, { maxAge: remember_me })
+                res.cookie('b_username', _username, { maxAge: remember_me })
+                return res.json({
+                    code: 200,
+                    message: '登录成功',
+                    data: token
+                })
+            }
+            return res.json({
+                code: -200,
+                message: '用户名或者密码错误'
+            })
+        })
+        .catch(err => {
+            res.json({
+                code: -200,
+                message: err.toString()
+            })
+        })
 }
 
 /**
@@ -97,35 +93,35 @@ exports.login = (req, res) => {
  * @return {json}         [description]
  */
 exports.insert = (req, res, next) => {
-    var email = req.body.email,
-        password = req.body.password,
-        username = req.body.username
-
+    const { email, password, username } = req.body
     if (fsExistsSync('./admin.lock')) {
-        return res.render('admin-add.html', {message: '请先把 admin.lock 删除'})
+        return res.render('admin-add.html', { message: '请先把 admin.lock 删除' })
     }
     if (!username || !password || !email) {
         return res.render('admin-add.html', { message: '请将表单填写完整' })
     }
-    Admin.findOneAsync({ username }).then(result => {
-        if (result) {
-            return '该用户已经存在'
-        }
-        return Admin.createAsync({
-            username,
-            password: md5(md5Pre + password),
-            email,
-            creat_date: moment().format('YYYY-MM-DD HH:mm:ss'),
-            update_date: moment().format('YYYY-MM-DD HH:mm:ss'),
-            is_delete: 0,
-            timestamp: moment().format('X')
-        }).then(() => {
-            fs.writeFileSync('./admin.lock', username)
-            return '添加用户成功: '+username+', 密码: '+password
+    Admin.findOneAsync({ username })
+        .then(result => {
+            if (result) {
+                return '该用户已经存在'
+            }
+            return Admin.createAsync({
+                username,
+                password: md5(md5Pre + password),
+                email,
+                creat_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                update_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                is_delete: 0,
+                timestamp: moment().format('X')
+            }).then(() => {
+                fs.writeFileSync('./admin.lock', username)
+                return '添加用户成功: ' + username + ', 密码: ' + password
+            })
         })
-    }).then(message => {
-        res.render('admin-add.html', { message })
-    }).catch(err => next(err))
+        .then(message => {
+            res.render('admin-add.html', { message })
+        })
+        .catch(err => next(err))
 }
 
 /**
@@ -136,15 +132,14 @@ exports.insert = (req, res, next) => {
  * @return {[type]}        [description]
  */
 exports.modify = (req, res) => {
-    var _id = req.body.id,
-        email = req.body.email,
-        password = req.body.password,
-        username = req.body.username
+    const { id, email, password, username } = req.body
     var data = {
-        email, username, update_date: moment().format('YYYY-MM-DD HH:mm:ss')
+        email,
+        username,
+        update_date: moment().format('YYYY-MM-DD HH:mm:ss')
     }
     if (password) data.password = md5(md5Pre + password)
-    modify(res, Admin, _id, data)
+    modify(res, Admin, id, data)
 }
 
 /**

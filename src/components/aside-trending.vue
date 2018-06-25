@@ -5,7 +5,7 @@
     <div class="card card-trending">
         <h2 class="card-title">热门文章</h2>
         <div class="card-content">
-            <div v-for="(item, index) in trending" class="trending-item">
+            <div v-for="(item, index) in trending" :key="item._id" class="trending-item">
                 <span class="trending-rank-num">{{ index + 1 }}</span>
                 <router-link :to="`/article/${item._id}`" class="trending-title">{{ item.title }}</router-link>
                 <div class="trending-meta">
@@ -16,16 +16,16 @@
         </div>
     </div>
 </template>
-<script lang="babel">
+<script>
 // import Affix from '~components/affix.vue'
 export default {
     name: 'aside-trending',
+    components: {
+        // Affix
+    },
     props: ['trending'],
     serverCacheKey: () => {
         return `aside::trending`
-    },
-    components: {
-        // Affix
     }
 }
 </script>

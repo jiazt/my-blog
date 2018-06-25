@@ -1,5 +1,3 @@
-import api from '~api'
-
 const state = () => ({
     lists: {
         hasNext: false,
@@ -15,9 +13,18 @@ const state = () => ({
 })
 
 const actions = {
-    async ['getAdminList'] ({commit, state}, config) {
+    async ['getAdminList'](
+        {
+            commit,
+            state,
+            rootState: { $api }
+        },
+        config
+    ) {
         if (state.lists.data.length > 0 && config.path === state.lists.path && config.page === 1) return
-        const { data: { data, code} } = await api.get('backend/admin/list', {...config, cache: true})
+        const {
+            data: { data, code }
+        } = await $api.get('backend/admin/list', { ...config, cache: true })
         if (data && code === 200) {
             commit('receiveAdminList', {
                 ...data,
@@ -26,8 +33,16 @@ const actions = {
             })
         }
     },
-    async ['getAdminItem'] ({commit}, config) {
-        const { data: { data, code} } = await api.get('backend/admin/item', config)
+    async ['getAdminItem'](
+        {
+            commit,
+            rootState: { $api }
+        },
+        config
+    ) {
+        const {
+            data: { data, code }
+        } = await $api.get('backend/admin/item', config)
         if (data && code === 200) {
             commit('receiveAdminItem', {
                 data,
@@ -38,7 +53,7 @@ const actions = {
 }
 
 const mutations = {
-    ['receiveAdminList'](state, {list, path, hasNext, hasPrev, page}) {
+    ['receiveAdminList'](state, { list, path, hasNext, hasPrev, page }) {
         if (page === 1) {
             list = [].concat(list)
         } else {
@@ -46,7 +61,11 @@ const mutations = {
         }
         page++
         state.lists = {
-            data: list, hasNext, hasPrev, page, path
+            data: list,
+            hasNext,
+            hasPrev,
+            page,
+            path
         }
     },
     ['receiveAdminItem'](state, payload) {
@@ -70,10 +89,10 @@ const mutations = {
 }
 
 const getters = {
-    ['getAdminList'] (state) {
+    ['getAdminList'](state) {
         return state.lists
     },
-    ['getAdminItem'] (state) {
+    ['getAdminItem'](state) {
         return state.item
     }
 }

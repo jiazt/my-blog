@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang="babel">
+<script>
 export default {
     name: 'back-top',
     data() {
@@ -12,16 +12,26 @@ export default {
             scrollTop: 0
         }
     },
+    mounted() {
+        window.addEventListener('scroll', this.scrolling)
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.scrolling)
+    },
     methods: {
         scrolling() {
             if (window.scrollTime) window.clearTimeout(window.scrollTime)
             window.scrollTime = window.setTimeout(() => {
-                this.scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop)
+                this.scrollTop = Math.max(
+                    window.pageYOffset,
+                    document.documentElement.scrollTop,
+                    document.body.scrollTop
+                )
             }, 100)
         },
         handleBackTop() {
-            var top = this.scrollTop
-            var timer = setInterval(() => {
+            let top = this.scrollTop
+            const timer = setInterval(() => {
                 top -= Math.abs(top * 0.1)
                 if (top <= 1) {
                     top = 0
@@ -31,12 +41,6 @@ export default {
                 // document.body.scrollTop = top
             }, 20)
         }
-    },
-    mounted() {
-        window.addEventListener('scroll', this.scrolling)
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.scrolling)
-    },
+    }
 }
 </script>

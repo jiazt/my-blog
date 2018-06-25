@@ -18,7 +18,7 @@
     </nav>
 </template>
 
-<script lang="babel">
+<script>
 import cookies from 'js-cookie'
 export default {
     name: 'navigation',
@@ -34,7 +34,7 @@ export default {
         },
         search(e) {
             var qs = e.target.value
-            if (qs === "") {
+            if (qs === '') {
                 return false
             }
             this.$router.replace('/search/' + qs)

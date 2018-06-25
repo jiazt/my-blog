@@ -1,5 +1,3 @@
-import api from '~api'
-
 const state = () => ({
     lists: {
         data: [],
@@ -11,30 +9,62 @@ const state = () => ({
 })
 
 const actions = {
-    async ['getArticleList'] ({commit, state}, config) {
+    async ['getArticleList'](
+        {
+            commit,
+            state,
+            rootState: { $api }
+        },
+        config
+    ) {
         if (state.lists.data.length > 0 && config.path === state.lists.path && config.page === 1) return
-        const { data: { data, code} } = await api.get('backend/article/list', config)
+        const {
+            data: { data, code }
+        } = await $api.get('backend/article/list', config)
         if (data && code === 200) {
             commit('receiveArticleList', {
                 ...data,
-                ...config,
+                ...config
             })
         }
     },
-    async ['getArticleItem'] (store, config) {
-        const { data: { data, code} } = await api.get('backend/article/item', config)
+    async ['getArticleItem'](
+        {
+            rootState: { $api }
+        },
+        config
+    ) {
+        const {
+            data: { data, code }
+        } = await $api.get('backend/article/item', config)
         if (data && code === 200) {
             return data
         }
     },
-    async ['deleteArticle'] ({commit}, config) {
-        const { data: { code} } = await api.get('backend/article/delete', config)
+    async ['deleteArticle'](
+        {
+            commit,
+            rootState: { $api }
+        },
+        config
+    ) {
+        const {
+            data: { code }
+        } = await $api.get('backend/article/delete', config)
         if (code === 200) {
             commit('deleteArticle', config.id)
         }
     },
-    async ['recoverArticle'] ({commit}, config) {
-        const { data: { code} } = await api.get('backend/article/recover', config)
+    async ['recoverArticle'](
+        {
+            commit,
+            rootState: { $api }
+        },
+        config
+    ) {
+        const {
+            data: { code }
+        } = await $api.get('backend/article/recover', config)
         if (code === 200) {
             commit('recoverArticle', config.id)
         }
@@ -42,14 +72,18 @@ const actions = {
 }
 
 const mutations = {
-    ['receiveArticleList'](state, {list, path, hasNext, hasPrev, page}) {
+    ['receiveArticleList'](state, { list, path, hasNext, hasPrev, page }) {
         if (page === 1) {
             list = [].concat(list)
         } else {
             list = state.lists.data.concat(list)
         }
         state.lists = {
-            data: list,  path, hasNext, hasPrev, page
+            data: list,
+            path,
+            hasNext,
+            hasPrev,
+            page
         }
     },
     ['insertArticleItem'](state, payload) {
@@ -74,10 +108,10 @@ const mutations = {
 }
 
 const getters = {
-    ['getArticleList'] (state) {
+    ['getArticleList'](state) {
         return state.lists
     },
-    ['getArticleItem'] (state) {
+    ['getArticleItem'](state) {
         return state.item
     }
 }

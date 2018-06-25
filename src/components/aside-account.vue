@@ -6,8 +6,8 @@
     </div>
 </template>
 
-<script lang="babel">
-import api from '~api'
+<script>
+// import api from '~api'
 export default {
     name: 'aside-account',
     serverCacheKey: () => {
@@ -15,7 +15,7 @@ export default {
     },
     methods: {
         async handleLogout() {
-            await api.post('frontend/user/logout', {})
+            await this.$store.$api.post('frontend/user/logout', {})
             window.location.href = '/'
         }
     }

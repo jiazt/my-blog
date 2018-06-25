@@ -7,30 +7,37 @@
 
 // const webpack = require('webpack')
 const path = require('path')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
+const WebpackBar = require('webpackbar')
+
 const utils = require('./utils')
 const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-require('babel-polyfill')
+const isProd = process.env.NODE_ENV === 'production'
+
+require('@babel/polyfill')
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
+    mode: 'development',
+    performance: {
+        maxEntrypointSize: 300000,
+        hints: isProd ? 'warning' : false,
+        assetFilter: function(assetFilename) {
+            return assetFilename.endsWith('.js')
+        }
+    },
     entry: {
         app: './src/entry-client.js'
     },
     output: {
         path: config.build.assetsRoot,
         filename: '[name].js',
-        publicPath: process.env.NODE_ENV === 'production'
-            ? config.build.assetsPublicPath
-            : config.dev.assetsPublicPath
+        publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -43,7 +50,7 @@ module.exports = {
             '~mixins': resolve('src/mixins'),
             '~store': resolve('src/store'),
             '~utils': resolve('src/utils'),
-            'assets': resolve('src/assets'),
+            assets: resolve('src/assets'),
             'api-config': resolve('src/api/config-client')
         }
     },
@@ -54,24 +61,29 @@ module.exports = {
                 use: [
                     {
                         loader: 'vue-loader',
-                        options: vueLoaderConfig
-                    },
+                        options: {
+                            compilerOptions: {
+                                preserveWhitespace: true
+                            }
+                        }
+                    }
                 ],
                 include: [resolve('src')]
-            }, {
+            },
+            {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [
-                    resolve('src')
-                ]
-            }, {
+                include: [resolve('src')]
+            },
+            {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: utils.assetsPath('img/[name].[hash:7].[ext]')
                 }
-            }, {
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
@@ -81,27 +93,7 @@ module.exports = {
             }
         ]
     },
-    plugins: process.env.NODE_ENV === 'production'
-        ? [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    compress: {
-                        warnings: false
-                    }
-                },
-                sourceMap: config.build.productionSourceMap,
-                parallel: true
-            }),
-            new ExtractTextPlugin({
-                filename: utils.assetsPath('css/[name].[contenthash].css')
-            }),
-            new OptimizeCSSPlugin({
-                cssProcessorOptions: {
-                    safe: true
-                }
-            })
-        ]
-        : [
-            new FriendlyErrorsPlugin()
-        ]
+    plugins: [new VueLoaderPlugin(), new WebpackBar()].concat(
+        process.env.NODE_ENV === 'production' ? [] : [new FriendlyErrorsPlugin()]
+    )
 }

@@ -1,26 +1,13 @@
 {
     "presets": [
-        [
-            "env",
-            {
-                "modules": false
-            }
-        ],
-        "stage-2"
+        ["@babel/preset-env", {
+            "debug": true
+        }],
+        ["@babel/preset-stage-2", {
+            "decoratorsLegacy": true
+        }]
     ],
     "plugins": [
-        "transform-runtime"
-    ],
-    "comments": false,
-    "env": {
-        "test": {
-            "presets": [
-                "env",
-                "stage-2"
-            ],
-            "plugins": [
-                "istanbul"
-            ]
-        }
-    }
+        "@babel/plugin-transform-runtime"
+    ]
 }

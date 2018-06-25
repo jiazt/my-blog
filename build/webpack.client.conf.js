@@ -3,44 +3,44 @@
  * @author lincenying(lincenying@qq.com)
  */
 
-const path = require('path')
-const utils = require('./utils')
 const webpack = require('webpack')
-const config = require('../config')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
-const SwRegisterWebpackPlugin = require('sw-register-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-const isProduction = process.env.NODE_ENV === 'production'
+const baseConfig = require('./webpack.base.conf')
+const config = require('../config')
+const utils = require('./utils')
 
-const env = isProduction
-    ? config.build.env
-    : config.dev.env
+const isProd = process.env.NODE_ENV === 'production'
+
+const env = isProd ? config.build.env : config.dev.env
 
 let sourceMap = '#eval-source-map'
-if (isProduction) {
+if (isProd) {
     if (config.build.productionSourceMap) sourceMap = '#source-map'
     else sourceMap = false
 }
 
-const webpackConfig = merge(baseWebpackConfig, {
+const webpackConfig = merge(baseConfig, {
     module: {
         rules: utils.styleLoaders({
             sourceMap: config.build.productionSourceMap,
-            extract: isProduction,
-            usePostCSS: isProduction,
+            extract: isProd,
+            usePostCSS: isProd
         })
     },
     externals: {
-        'jquery': 'jQuery'
+        jquery: 'jQuery'
     },
     devtool: sourceMap,
     output: {
         path: config.build.assetsRoot,
-        filename: utils.assetsPath('js/[name].[chunkhash].js'),
-        chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+        filename: utils.assetsPath(isProd ? 'js/[name].[chunkhash:7].js' : 'js/[name].js'),
+        chunkFilename: utils.assetsPath(isProd ? 'js/[name].[chunkhash:7].js' : 'js/[name].js')
     },
     plugins: [
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -48,42 +48,58 @@ const webpackConfig = merge(baseWebpackConfig, {
             'process.env.VUE_ENV': '"client"',
             'process.env': env
         }),
-
-        // split vendor js into its own file
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks(module) {
-                // any required modules inside node_modules are extracted to vendor
-                return (
-                    module.resource
-                    && (/\.js$/).test(module.resource)
-                    && module.resource.indexOf(
-                        path.join(__dirname, '../node_modules')
-                    ) === 0
-                )
-            }
-            /* eslint-enable fecs-use-method-definition */
-        }),
-
-        // extract webpack runtime and module manifest to its own file in order to
-        // prevent vendor hash from being updated whenever app bundle is updated
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest',
-            chunks: ['vendor']
-        }),
         new VueSSRClientPlugin()
     ]
 })
 
-if (isProduction) {
+if (isProd) {
+    webpackConfig.mode = 'production'
+    webpackConfig.optimization = {
+        runtimeChunk: {
+            name: 'manifest'
+        },
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    priority: -20,
+                    chunks: 'all'
+                }
+            }
+        },
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: {
+                        warnings: false
+                    }
+                },
+                sourceMap: config.build.productionSourceMap,
+                parallel: true
+            }),
+            new OptimizeCSSAssetsPlugin({
+                cssProcessorOptions: {
+                    discardComments: { removeAll: true },
+                    // 避免 cssnano 重新计算 z-index
+                    safe: true
+                }
+            })
+        ]
+    }
     webpackConfig.plugins = [
         ...webpackConfig.plugins,
+        // new ExtractTextPlugin({
+        //     filename: utils.assetsPath('css/[name].[contenthash:7].css')
+        // }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: utils.assetsPath('css/[name].[contenthash:7].css'),
+            chunkFilename: utils.assetsPath('css/[name].[contenthash:7].css')
+        }),
         // service worker caching
-        new SWPrecacheWebpackPlugin(config.swPrecache.build),
-        new SwRegisterWebpackPlugin({
-            prefix: '/',
-            filePath: path.resolve(__dirname, '../src/sw-register.js')
-        })
+        new SWPrecacheWebpackPlugin(config.swPrecache.build)
     ]
 }
 
@@ -94,11 +110,7 @@ if (config.build.productionGzip) {
         new CompressionWebpackPlugin({
             asset: '[path].gz[query]',
             algorithm: 'gzip',
-            test: new RegExp(''
-                + '\\.('
-                + config.build.productionGzipExtensions.join('|')
-                + ')$'
-            ),
+            test: new RegExp('' + '\\.(' + config.build.productionGzipExtensions.join('|') + ')$'),
             threshold: 10240,
             minRatio: 0.8
         })

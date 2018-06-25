@@ -17,16 +17,20 @@
     </div>
 </template>
 
-<script lang="babel">
-import api from '~api'
+<script>
+// import api from '~api'
 import { mapGetters } from 'vuex'
+import { showMsg } from '~utils'
 import checkAdmin from '~mixins/check-admin'
 import aInput from '../components/_input.vue'
 
 export default {
     name: 'backend-category-modify',
+    components: {
+        aInput
+    },
     mixins: [checkAdmin],
-    async asyncData({store, route}) {
+    async asyncData({ store, route }) {
         await store.dispatch('global/category/getCategoryItem', {
             path: route.path,
             id: route.params.id
@@ -41,23 +45,32 @@ export default {
             }
         }
     },
-    components: {
-        aInput
-    },
     computed: {
         ...mapGetters({
             item: 'global/category/getCategoryItem'
         })
     },
+    watch: {
+        item(val) {
+            this.form.cate_name = val.data.cate_name
+            this.form.cate_order = val.data.cate_order
+        }
+    },
+    mounted() {
+        this.form.cate_name = this.item.data.cate_name
+        this.form.cate_order = this.item.data.cate_order
+    },
     methods: {
         async modify() {
             if (!this.form.cate_name || !this.form.cate_order) {
-                this.$store.dispatch('global/showMsg', '请将表单填写完整!')
+                showMsg('请将表单填写完整!')
                 return
             }
-            const { data: { message, code, data} } = await api.post('backend/category/modify', this.form)
+            const {
+                data: { message, code, data }
+            } = await this.$store.$api.post('backend/category/modify', this.form)
             if (code === 200 && data) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: message
                 })
@@ -66,17 +79,7 @@ export default {
             }
         }
     },
-    mounted() {
-        this.form.cate_name = this.item.data.cate_name
-        this.form.cate_order = this.item.data.cate_order
-    },
-    watch: {
-        item(val) {
-            this.form.cate_name = val.data.cate_name
-            this.form.cate_order = val.data.cate_order
-        }
-    },
-    metaInfo () {
+    metaInfo() {
         return {
             title: '编辑分类 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

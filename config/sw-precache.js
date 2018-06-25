@@ -10,7 +10,6 @@
  */
 
 module.exports = {
-
     /**
      * build 时的配置文件
      *
@@ -45,13 +44,13 @@ module.exports = {
             // map文件不需要缓存
             /\.map$/,
             /vue-ssr-client-manifest\.json/,
-            /\/backend/
+            /\/backend/,
         ],
         ignoreUrlParametersMatching: [
             // map文件不需要缓存
             /\.map$/,
             /vue-ssr-client-manifest\.json/,
-            /\/backend/
+            /\/backend/,
         ],
 
         /**
@@ -85,15 +84,13 @@ module.exports = {
 
         // maximumFileSizeToCacheInBytes: 4194304, // 最大缓存大小
 
-
         /**
          * 生成service-worker.js的文件配置模板，不配置时采用默认的配置
          * 我们做了sw的更新策略，所以在原有模板基础做了相应的修改
          *
          * @type {string}
          */
-        templateFilePath: 'config/sw.tmpl.js',
-
+        templateFilePath: 'config/sw.tmpl.tpl',
 
         /**
          * 是否 verbose
@@ -101,7 +98,6 @@ module.exports = {
          * @type {boolean}
          */
         verbose: true,
-
 
         /**
          * 需要根据路由动态处理的文件
@@ -111,8 +107,8 @@ module.exports = {
         runtimeCaching: [
             {
                 urlPattern: /\/.*/,
-                handler: 'networkFirst'
-            }
+                handler: 'networkFirst',
+            },
             // 如果在staticFileGlobs中设置相同的缓存路径，可能导致此处不起作用
             // {
             //     urlPattern: /\/fonts\//,
@@ -124,6 +120,6 @@ module.exports = {
             //         }
             //     }
             // }
-        ]
-    }
+        ],
+    },
 }

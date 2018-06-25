@@ -16,21 +16,25 @@
         </div>
         <div class="settings-footer clearfix">
             <router-link to="/backend/user/list" class="btn btn-blue">返回</router-link>
-            <a @click="modify" href="javascript:;" class="btn btn-yellow">编辑管理员</a>
+            <a @click="modify" href="javascript:;" class="btn btn-yellow">编辑用户</a>
         </div>
     </div>
 </template>
 
-<script lang="babel">
+<script>
 import { mapGetters } from 'vuex'
-import api from '~api'
+import { showMsg } from '~utils'
+// import api from '~api'
 import checkAdmin from '~mixins/check-admin'
 import aInput from '~components/_input.vue'
 
 export default {
     name: 'backend-user-modify',
+    components: {
+        aInput
+    },
     mixins: [checkAdmin],
-    async asyncData({store, route}) {
+    async asyncData({ store, route }) {
         await store.dispatch('backend/user/getUserItem', {
             id: route.params.id,
             path: route.path
@@ -46,23 +50,32 @@ export default {
             }
         }
     },
-    components: {
-        aInput
-    },
     computed: {
         ...mapGetters({
             item: 'backend/user/getUserItem'
         })
     },
+    watch: {
+        item(val) {
+            this.form.username = val.data.username
+            this.form.email = val.data.email
+        }
+    },
+    mounted() {
+        this.form.username = this.item.data.username
+        this.form.email = this.item.data.email
+    },
     methods: {
         async modify() {
             if (!this.form.username || !this.form.email) {
-                this.$store.dispatch('global/showMsg', '请将表单填写完整!')
+                showMsg('请将表单填写完整!')
                 return
             }
-            const { data: { message, code, data} } = await api.post('backend/user/modify', this.form)
+            const {
+                data: { message, code, data }
+            } = await this.$store.$api.post('backend/user/modify', this.form)
             if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: message
                 })
@@ -71,17 +84,7 @@ export default {
             }
         }
     },
-    mounted() {
-        this.form.username = this.item.data.username
-        this.form.email = this.item.data.email
-    },
-    watch: {
-        item(val) {
-            this.form.username = val.data.username
-            this.form.email = val.data.email
-        }
-    },
-    metaInfo () {
+    metaInfo() {
         return {
             title: '用户编辑 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

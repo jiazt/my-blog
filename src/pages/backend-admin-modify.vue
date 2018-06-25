@@ -21,9 +21,10 @@
     </div>
 </template>
 
-<script lang="babel">
+<script>
 import { mapGetters } from 'vuex'
-import api from '~api'
+import { showMsg } from '~utils'
+// import api from '~api'
 import checkAdmin from '~mixins/check-admin'
 
 import backendMenu from '~components/backend-menu.vue'
@@ -31,8 +32,12 @@ import aInput from '~components/_input.vue'
 
 export default {
     name: 'backend-admin-modify',
+    components: {
+        aInput,
+        backendMenu
+    },
     mixins: [checkAdmin],
-    async asyncData({store, route}) {
+    async asyncData({ store, route }) {
         await store.dispatch('backend/admin/getAdminItem', {
             id: route.params.id,
             path: route.path
@@ -48,24 +53,32 @@ export default {
             }
         }
     },
-    components: {
-        aInput,
-        backendMenu
-    },
     computed: {
         ...mapGetters({
             item: 'backend/admin/getAdminItem'
         })
     },
+    watch: {
+        item(val) {
+            this.form.username = val.data.username
+            this.form.email = val.data.email
+        }
+    },
+    mounted() {
+        this.form.username = this.item.data.username
+        this.form.email = this.item.data.email
+    },
     methods: {
         async modify() {
             if (!this.form.username || !this.form.email) {
-                this.$store.dispatch('global/showMsg', '请将表单填写完整!')
+                showMsg('请将表单填写完整!')
                 return
             }
-            const { data: { message, code, data} } = await api.post('backend/admin/modify', this.form)
+            const {
+                data: { message, code, data }
+            } = await this.$store.$api.post('backend/admin/modify', this.form)
             if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: message
                 })
@@ -74,17 +87,7 @@ export default {
             }
         }
     },
-    mounted() {
-        this.form.username = this.item.data.username
-        this.form.email = this.item.data.email
-    },
-    watch: {
-        item(val) {
-            this.form.username = val.data.username
-            this.form.email = val.data.email
-        }
-    },
-    metaInfo () {
+    metaInfo() {
         return {
             title: '编辑管理员 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

@@ -1,5 +1,3 @@
-import api from '~api'
-
 const state = () => ({
     lists: {
         data: [],
@@ -10,9 +8,18 @@ const state = () => ({
 })
 
 const actions = {
-    async ['getCommentList']({commit, state}, config) {
+    async ['getCommentList'](
+        {
+            commit,
+            state,
+            rootState: { $api }
+        },
+        config
+    ) {
         if (config.path === state.lists.path && config.page === 1) return
-        const { data: { data, code} } = await api.get('frontend/comment/list', { ...config, cache: true })
+        const {
+            data: { data, code }
+        } = await $api.get('frontend/comment/list', { ...config, cache: true })
         if (data && code === 200) {
             commit('recevieCommentList', {
                 ...config,
@@ -23,14 +30,18 @@ const actions = {
 }
 
 const mutations = {
-    ['recevieCommentList'](state, {list, hasNext, hasPrev, page, path}) {
+    ['recevieCommentList'](state, { list, hasNext, hasPrev, page, path }) {
         if (page === 1) {
             list = [].concat(list)
         } else {
             list = state.lists.data.concat(list)
         }
         state.lists = {
-            data: list, hasNext, hasPrev, page, path
+            data: list,
+            hasNext,
+            hasPrev,
+            page,
+            path
         }
     },
     ['insertCommentItem'](state, data) {

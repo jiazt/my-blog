@@ -34,7 +34,7 @@
     </div>
 </template>
 
-<script lang="babel">
+<script>
 import { mapGetters } from 'vuex'
 import metaMixin from '~mixins'
 import actions from '../components/item-actions.vue'
@@ -44,18 +44,27 @@ import comment from '../components/frontend-comment.vue'
 
 export default {
     name: 'frontend-article',
-    async asyncData({store, route}) {
-        const { path, params: { id }} = route
+    async asyncData({ store, route }) {
+        const {
+            path,
+            params: { id }
+        } = route
         await Promise.all([
             store.dispatch('global/category/getCategoryList'),
             store.dispatch('frontend/article/getTrending'),
-            store.dispatch(`global/comment/getCommentList`, { id, path, page: 1, limit: 10}),
+            store.dispatch(`global/comment/getCommentList`, { id, path, page: 1, limit: 10 }),
             store.dispatch(`frontend/article/getArticleItem`, { id, path })
         ])
     },
+    components: {
+        actions,
+        comment,
+        category,
+        trending
+    },
     mixins: [metaMixin],
     beforeRouteUpdate(to, from, next) {
-        if (to.path !== from.path) this.$options.asyncData({store: this.$store, route: to})
+        if (to.path !== from.path) this.$options.asyncData({ store: this.$store, route: to })
         next()
     },
     computed: {
@@ -66,11 +75,8 @@ export default {
             trending: 'frontend/article/getTrending'
         })
     },
-    components: {
-        actions,
-        comment,
-        category,
-        trending
+    mounted() {
+        // this.$options.asyncData({store: this.$store})
     },
     methods: {
         addTarget(content) {
@@ -78,10 +84,7 @@ export default {
             return content.replace(/<a(.*?)href="http/g, '<a$1target="_blank" href="http')
         }
     },
-    mounted() {
-        // this.$options.asyncData({store: this.$store})
-    },
-    metaInfo () {
+    metaInfo() {
         const title = this.article.data.title ? this.article.data.title + ' - M.M.F 小屋' : 'M.M.F 小屋'
         return {
             title,

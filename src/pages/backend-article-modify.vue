@@ -9,7 +9,7 @@
                 <i class="icon icon-arrow-down"></i>
                 <select v-model="form.category" class="select-item" name="category">
                     <option value="">请选择分类</option>
-                    <option v-for="item in category" :value="item._id">{{ item.cate_name }}</option>
+                    <option v-for="item in category" :key="item._id" :value="item._id">{{ item.cate_name }}</option>
                 </select>
                 <span class="input-info error">请输入分类</span>
             </a-input>
@@ -26,17 +26,21 @@
     </div>
 </template>
 
-<script lang="babel">
+<script>
 /* global modifyEditor */
 import { mapGetters } from 'vuex'
-import api from '~api'
+import { showMsg } from '~utils'
+// import api from '~api'
 import checkAdmin from '~mixins/check-admin'
 import aInput from '../components/_input.vue'
 
 export default {
     name: 'backend-article-modify',
+    components: {
+        aInput
+    },
     mixins: [checkAdmin],
-    async asyncData({store, route}, config = { limit: 99 }) {
+    async asyncData({ store, route }, config = { limit: 99 }) {
         config.all = 1
         await store.dispatch('global/category/getCategoryList', {
             ...config,
@@ -55,56 +59,9 @@ export default {
             }
         }
     },
-    components: {
-        aInput
-    },
     computed: {
         ...mapGetters({
             category: 'global/category/getCategoryList'
-        })
-    },
-    methods: {
-        async modify() {
-            const content = modifyEditor.getMarkdown()
-            if (!this.form.title || !this.form.category || !content) {
-                this.$store.dispatch('global/showMsg', '请将表单填写完整!')
-                return
-            }
-            this.form.content = content
-            const { data: { message, code, data} } = await api.post('backend/article/modify', this.form)
-            if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
-                    type: 'success',
-                    content: message
-                })
-                this.$store.commit('backend/article/updateArticleItem', data)
-                this.$router.push('/backend/article/list')
-            }
-        }
-    },
-    async mounted() {
-        const data = await this.$store.dispatch('backend/article/getArticleItem', {id: this.$route.params.id})
-        this.form.title = data.title
-        this.form.category_old = data.category
-        this.form.category = data.category
-        this.form.content = data.content
-        // eslint-disable-next-line
-        window.modifyEditor = editormd("modify-content", {
-            width: "100%",
-            height: 500,
-            markdown: data.content,
-            placeholder: '请输入内容...',
-            path: '/static/editor.md/lib/',
-            toolbarIcons() {
-                return [
-                    "bold", "italic", "quote", "|",
-                    "list-ul", "list-ol", "hr", "|",
-                    "link", "reference-link", "image", "code", "table", "|",
-                    "watch", "preview", "fullscreen"
-                ]
-            },
-            watch : false,
-            saveHTMLToTextarea : true
         })
     },
     watch: {
@@ -113,7 +70,66 @@ export default {
             this.form.category_name = obj.cate_name
         }
     },
-    metaInfo () {
+    async mounted() {
+        const data = await this.$store.dispatch('backend/article/getArticleItem', { id: this.$route.params.id })
+        this.form.title = data.title
+        this.form.category_old = data.category
+        this.form.category = data.category
+        this.form.content = data.content
+        // eslint-disable-next-line
+        window.modifyEditor = editormd('modify-content', {
+            width: '100%',
+            height: 500,
+            markdown: data.content,
+            placeholder: '请输入内容...',
+            path: '/static/editor.md/lib/',
+            toolbarIcons() {
+                return [
+                    'bold',
+                    'italic',
+                    'quote',
+                    '|',
+                    'list-ul',
+                    'list-ol',
+                    'hr',
+                    '|',
+                    'link',
+                    'reference-link',
+                    'image',
+                    'code',
+                    'table',
+                    '|',
+                    'watch',
+                    'preview',
+                    'fullscreen'
+                ]
+            },
+            watch: false,
+            saveHTMLToTextarea: true
+        })
+    },
+    methods: {
+        async modify() {
+            const content = modifyEditor.getMarkdown()
+            if (!this.form.title || !this.form.category || !content) {
+                showMsg('请将表单填写完整!')
+                return
+            }
+            this.form.content = content
+            const {
+                data: { message, code, data }
+            } = await this.$store.$api.post('backend/article/modify', this.form)
+            if (code === 200) {
+                showMsg({
+                    type: 'success',
+                    content: message
+                })
+                this.$store.commit('backend/article/updateArticleItem', data)
+                this.$router.push('/backend/article/list')
+            }
+        }
+    },
+    metaInfo() {
         return {
             title: '编辑文章 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

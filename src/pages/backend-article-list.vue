@@ -7,7 +7,7 @@
                 <div class="list-date">最后更新</div>
                 <div class="list-action">操作</div>
             </div>
-            <div v-for="item in topics.data" class="list-section">
+            <div v-for="item in topics.data" :key="item._id" class="list-section">
                 <div class="list-title">{{ item.title }}</div>
                 <div class="list-category">{{ item.category_name }}</div>
                 <div class="list-date">{{ item.update_date | timeAgo }}</div>
@@ -25,15 +25,16 @@
     </div>
 </template>
 
-<script lang="babel">
+<script>
 import { mapGetters } from 'vuex'
-import api from '~api'
+import { showMsg } from '~utils'
+// import api from '~api'
 import checkAdmin from '~mixins/check-admin'
 
 export default {
     name: 'backend-article-list',
     mixins: [checkAdmin],
-    async asyncData({store, route}, config = { page: 1 }) {
+    async asyncData({ store, route }, config = { page: 1 }) {
         await store.dispatch('backend/article/getArticleList', {
             ...config,
             path: route.path
@@ -44,14 +45,17 @@ export default {
             topics: 'backend/article/getArticleList'
         })
     },
+    mounted() {},
     methods: {
         loadMore(page = this.topics.page + 1) {
-            this.$options.asyncData({store: this.$store, route: this.$route}, {page})
+            this.$options.asyncData({ store: this.$store, route: this.$route }, { page })
         },
         async recover(id) {
-            const { data: { code, message} } = await api.get('backend/article/recover', { id })
+            const {
+                data: { code, message }
+            } = await this.$store.$api.get('backend/article/recover', { id })
             if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: message
                 })
@@ -59,9 +63,11 @@ export default {
             }
         },
         async deletes(id) {
-            const { data: { code, message} } = await api.get('backend/article/delete', { id })
+            const {
+                data: { code, message }
+            } = await this.$store.$api.get('backend/article/delete', { id })
             if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: message
                 })
@@ -69,10 +75,7 @@ export default {
             }
         }
     },
-    mounted() {
-
-    },
-    metaInfo () {
+    metaInfo() {
         return {
             title: '文章列表 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

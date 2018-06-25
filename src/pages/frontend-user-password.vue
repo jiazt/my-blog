@@ -26,8 +26,9 @@
     </div>
 </template>
 
-<script lang="babel">
-import api from '~api'
+<script>
+// import api from '~api'
+import { showMsg } from '~utils'
 import metaMixin from '~mixins'
 import checkUser from '~mixins/check-user'
 import account from '~components/aside-account.vue'
@@ -35,6 +36,10 @@ import aInput from '~components/_input.vue'
 
 export default {
     name: 'frontend-user-password',
+    components: {
+        aInput,
+        account
+    },
     mixins: [metaMixin, checkUser],
     data() {
         return {
@@ -45,22 +50,23 @@ export default {
             }
         }
     },
-    components: {
-        aInput,
-        account
+    mounted() {
+        this.$store.dispatch('global/gProgress', 100)
     },
     methods: {
         async modify() {
             if (!this.form.password || !this.form.old_password || !this.form.re_password) {
-                this.$store.dispatch('global/showMsg', '请将表单填写完整!')
+                showMsg('请将表单填写完整!')
                 return
             } else if (this.form.password !== this.form.re_password) {
-                this.$store.dispatch('global/showMsg', '两次密码输入不一致!')
+                showMsg('两次密码输入不一致!')
                 return
             }
-            const { data: { code, data} } = await api.post('frontend/user/password', this.form)
+            const {
+                data: { code, data }
+            } = await this.$store.$api.post('frontend/user/password', this.form)
             if (code === 200) {
-                this.$store.dispatch('global/showMsg', {
+                showMsg({
                     type: 'success',
                     content: data
                 })
@@ -70,10 +76,7 @@ export default {
             }
         }
     },
-    mounted() {
-        this.$store.dispatch('global/gProgress', 100)
-    },
-    metaInfo () {
+    metaInfo() {
         return {
             title: '密码 - M.M.F 小屋',
             meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]

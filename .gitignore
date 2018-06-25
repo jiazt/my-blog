@@ -1,4 +1,5 @@
 .DS_Store
+.idea/
 node_modules/
 dist/
 npm-debug.log*
@@ -6,3 +7,5 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 admin.lock
+server/config/secret.js
+server/config/mpapp.js

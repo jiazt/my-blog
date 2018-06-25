@@ -1,5 +1,3 @@
-import api from '~api'
-
 const state = () => ({
     lists: {
         hasNext: false,
@@ -15,9 +13,18 @@ const state = () => ({
 })
 
 const actions = {
-    async ['getUserList'] ({commit, state}, config) {
+    async ['getUserList'](
+        {
+            commit,
+            state,
+            rootState: { $api }
+        },
+        config
+    ) {
         if (state.lists.data.length > 0 && config.path === state.lists.path && config.page === 1) return
-        const { data: { data, code} } = await api.get('backend/user/list', {...config, cache: true})
+        const {
+            data: { data, code }
+        } = await $api.get('backend/user/list', { ...config, cache: true })
         if (data && code === 200) {
             commit('receiveUserList', {
                 ...data,
@@ -25,8 +32,16 @@ const actions = {
             })
         }
     },
-    async ['getUserItem'] ({commit}, config) {
-        const { data: { data, code} } = await api.get('backend/user/item', config)
+    async ['getUserItem'](
+        {
+            commit,
+            rootState: { $api }
+        },
+        config
+    ) {
+        const {
+            data: { data, code }
+        } = await $api.get('backend/user/item', config)
         if (data && code === 200) {
             commit('receiveUserItem', {
                 data,
@@ -37,7 +52,7 @@ const actions = {
 }
 
 const mutations = {
-    ['receiveUserList'](state, {list, path, hasNext, hasPrev, page}) {
+    ['receiveUserList'](state, { list, path, hasNext, hasPrev, page }) {
         if (page === 1) {
             list = [].concat(list)
         } else {
@@ -45,7 +60,11 @@ const mutations = {
         }
         page++
         state.lists = {
-            data: list, hasNext, hasPrev, page, path
+            data: list,
+            hasNext,
+            hasPrev,
+            page,
+            path
         }
     },
     ['receiveUserItem'](state, payload) {
@@ -69,10 +88,10 @@ const mutations = {
 }
 
 const getters = {
-    ['getUserList'] (state) {
+    ['getUserList'](state) {
         return state.lists
     },
-    ['getUserItem'] (state) {
+    ['getUserItem'](state) {
         return state.item
     }
 }
