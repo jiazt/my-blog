@@ -1,6 +1,3 @@
-# mmf-blog react v2版
-
-demo: [http://react.mmxiaowu.com](http://react.mmxiaowu.com)
 
 #### 说明
 
