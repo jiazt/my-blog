@@ -1,7 +1,3 @@
-# mmf-blog vuejs 2.0 服务端渲染 v2版
-
-demo: [http://www.mmxiaowu.com](http://www.mmxiaowu.com)
-
 ## 说明
 
 本站服务端采用 express + mongoDB 搭建, 客户端采用 Vue2 的服务端渲染搭建
