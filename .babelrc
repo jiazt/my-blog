@@ -1,13 +1,37 @@
 {
-    "presets": [
-        ["@babel/preset-env", {
-            "debug": true
-        }],
-        ["@babel/preset-stage-2", {
-            "decoratorsLegacy": true
-        }]
-    ],
-    "plugins": [
-        "@babel/plugin-transform-runtime"
-    ]
+    "env": {
+        "production": {
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "browsers": ["last 2 version", "ie 10"]
+                    },
+                    "modules": false,
+                    "debug": false
+                }], "react"
+            ],
+            "plugins": [
+                "transform-runtime",
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                "babel-plugin-transform-decorators-legacy"
+            ]
+        },
+        "development": {
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "chrome": 60
+                    },
+                    "modules": false,
+                    "debug": true
+                }], "react"
+            ],
+            "plugins": [
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                "babel-plugin-transform-decorators-legacy"
+            ]
+        }
+    }
 }
