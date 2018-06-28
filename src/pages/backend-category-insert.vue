@@ -60,8 +60,8 @@ export default {
     },
     metaInfo() {
         return {
-            title: '添加分类 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '添加分类 - 威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }

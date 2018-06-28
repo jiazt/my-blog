@@ -86,8 +86,8 @@ export default {
     },
     metaInfo() {
         return {
-            title: '用户编辑 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '用户编辑 - 威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }

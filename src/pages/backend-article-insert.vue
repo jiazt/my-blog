@@ -116,8 +116,8 @@ export default {
     },
     metaInfo() {
         return {
-            title: '发布文章 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '发布文章 - 威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }

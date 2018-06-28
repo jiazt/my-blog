@@ -39,8 +39,8 @@ export default {
     mounted() {},
     metaInfo() {
         return {
-            title: '分类列表 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '分类列表 - 威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }

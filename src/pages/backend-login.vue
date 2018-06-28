@@ -60,8 +60,8 @@ export default {
     },
     metaInfo() {
         return {
-            title: '管理员登录 - M.M.F 小屋',
-            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+            title: '管理员登录 - 威震天',
+            meta: [{ vmid: 'description', name: 'description', content: '威震天' }]
         }
     }
 }
