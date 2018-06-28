@@ -1,3 +1,4 @@
+
 ## 说明
 
 本站服务端采用 express + mongoDB 搭建, 客户端采用 Vue2 的服务端渲染搭建
@@ -8,6 +9,9 @@
 
 ---
 
+
+
+```
 配置文件: src/api/config-client.js (浏览器端)
 api: api地址 (如果 api 服务器和网站服务器是同一个域名, 或者用了反向代理, 可以直接用省去域名的绝对路径, 如: /api/)
 配置文件: src/api/config-server.js (服务器端)
