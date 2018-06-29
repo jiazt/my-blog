@@ -15,7 +15,7 @@
                 </div>
                 <div class="card card-answer">
                     <div class="answer-content">
-                        <div class="article-content markdown-body" v-html="addTarget(article.data.html)"></div>
+                        <div class="article-content markdown-body editormd-theme-dark" v-html="addTarget(article.data.html)"></div>
                     </div>
                     <actions :item="article.data"></actions>
                 </div>
