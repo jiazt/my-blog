@@ -111,7 +111,7 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'dist')))
 app.use('/static', serve('./dist/static', true))
-app.use(favicon('./static/img/icons/favicon-32x32.png'))
+app.use(favicon('./static/img/icons/technology.png'))
 // app.use('/static', serve('./static', true));
 app.use('/dist', serve('./dist', true))
 app.use('/manifest.json', serve('./manifest.json', true))
