@@ -1,4 +1,3 @@
-
 ## 说明
 
 本站服务端采用 express + mongoDB 搭建, 客户端采用 Vue2 的服务端渲染搭建
@@ -9,8 +8,6 @@
 
 ---
 
-
-
 ```
 配置文件: src/api/config-client.js (浏览器端)
 api: api地址 (如果 api 服务器和网站服务器是同一个域名, 或者用了反向代理, 可以直接用省去域名的绝对路径, 如: /api/)
@@ -20,6 +17,7 @@ port: 启动端口
 ```
 
 ## 准备工作:
+
 安装 NodeJS:
 https://nodejs.org/zh-cn/
 
@@ -28,6 +26,7 @@ https://www.mongodb.com/download-center#community
 
 在 server/config 文件夹下 创建 mpapp.js 文件
 里面写入: (小程序登录用的)
+
 ```javascript
 exports.apiId = ''
 exports.secret = ''
@@ -65,13 +64,6 @@ http://localhost:8080/api/backend
 ## loadtest 测试
 
 ```
-[Sat Jul 15 2017 10:53:20] INFO Requests: 0 (0%), requests per second: 0, mean latency: 0 ms
-[Sat Jul 15 2017 10:53:25] INFO Requests: 356 (18%), requests per second: 71, mean latency: 14 ms
-[Sat Jul 15 2017 10:53:30] INFO Requests: 804 (40%), requests per second: 90, mean latency: 11.1 ms
-[Sat Jul 15 2017 10:53:35] INFO Requests: 1290 (65%), requests per second: 97, mean latency: 10.2 ms
-[Sat Jul 15 2017 10:53:40] INFO Requests: 1764 (88%), requests per second: 95, mean latency: 10.6 ms
-[Sat Jul 15 2017 10:53:43] INFO
-[Sat Jul 15 2017 10:53:43] INFO Target URL:          http://localhost:8080/
 [Sat Jul 15 2017 10:53:43] INFO Max requests:        2000
 [Sat Jul 15 2017 10:53:43] INFO Concurrency level:   1
 [Sat Jul 15 2017 10:53:43] INFO Agent:               none
