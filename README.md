@@ -64,9 +64,6 @@ http://localhost:8080/api/backend
 ## loadtest 测试
 
 ```
-[Sat Jul 15 2017 10:53:43] INFO Max requests:        2000
-[Sat Jul 15 2017 10:53:43] INFO Concurrency level:   1
-[Sat Jul 15 2017 10:53:43] INFO Agent:               none
 [Sat Jul 15 2017 10:53:43] INFO
 [Sat Jul 15 2017 10:53:43] INFO Completed requests:  2000
 [Sat Jul 15 2017 10:53:43] INFO Total errors:        0
