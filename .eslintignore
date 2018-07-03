@@ -1,5 +1,2 @@
 build/*.js
-config/*.js
-static/**/*.js
-dist/**/*.js
-dist/**/*.css
+server/config/secret.js
