@@ -68,6 +68,9 @@ export default {
             markdown: '',
             placeholder: '请输入内容...',
             path: '/static/editor.md/lib/',
+            theme: 'dark',
+            previewTheme: 'dark',
+            editorTheme: 'pastel-on-dark',
             toolbarIcons() {
                 return [
                     'bold',

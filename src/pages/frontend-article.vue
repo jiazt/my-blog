@@ -14,8 +14,11 @@
                     </div>
                 </div>
                 <div class="card card-answer">
-                    <div class="answer-content">
-                        <div class="article-content markdown-body editormd-theme-dark" v-html="addTarget(article.data.html)"></div>
+                    <!-- <div id="test-editormd" class="editormd-onlyread answer-content">   
+                        <textarea style="display:none;" v-model="article.data"></textarea>
+                    </div> -->
+                    <div class="editormd-preview editormd-preview-theme-dark answer-content">
+                        <div class="markdown-body  article-content " previewcontainer="true" v-html="addTarget(article.data.html)"></div>
                     </div>
                     <actions :item="article.data"></actions>
                 </div>
@@ -66,6 +69,16 @@ export default {
     beforeRouteUpdate(to, from, next) {
         if (to.path !== from.path) this.$options.asyncData({ store: this.$store, route: to })
         next()
+        let testEditor
+        testEditor = editormd('test-editormd', {
+            width: '90%',
+            height: 540,
+            path: '../lib/',
+            //watch           : false,           // disable watch
+            readOnly: true,
+            styleActiveLine: false // disable active line
+            //lineNumbers     : false      // hide line numbers
+        })
     },
     computed: {
         ...mapGetters({
