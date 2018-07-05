@@ -14,9 +14,6 @@
                     </div>
                 </div>
                 <div class="card card-answer">
-                    <!-- <div id="test-editormd" class="editormd-onlyread answer-content">   
-                        <textarea style="display:none;" v-model="article.data"></textarea>
-                    </div> -->
                     <div class="editormd-preview editormd-preview-theme-dark answer-content">
                         <div class="markdown-body  article-content " previewcontainer="true" v-html="addTarget(article.data.html)"></div>
                     </div>
