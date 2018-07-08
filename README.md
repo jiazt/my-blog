@@ -65,10 +65,7 @@ http://localhost:8080/api/backend
 
 ```
 [Sat Jul 15 2017 10:53:43] INFO
-[Sat Jul 15 2017 10:53:43] INFO Completed requests:  2000
-[Sat Jul 15 2017 10:53:43] INFO Total errors:        0
-[Sat Jul 15 2017 10:53:43] INFO Total time:          22.645280754999998s
-[Sat Jul 15 2017 10:53:43] INFO Requests per second: 88
+
 [Sat Jul 15 2017 10:53:43] INFO Mean latency:        11.3 ms
 [Sat Jul 15 2017 10:53:43] INFO
 [Sat Jul 15 2017 10:53:43] INFO Percentage of the requests served within a certain time
