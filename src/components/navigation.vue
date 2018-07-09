@@ -13,7 +13,13 @@
                     </div>
                     </router-link>
                     <div class="ver-list" @mouseenter="showList()" @mouseleave="hideList()" v-show="listState">
-                        <span>更多...</span>
+                        <span class="more">更多...</span>
+                        <router-link to="/about" >
+                            <div class="list-item-first">
+                                <i class="icon icon-nav-features"></i>
+                                <span class="">关于</span>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
             </div>
