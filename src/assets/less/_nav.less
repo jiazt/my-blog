@@ -28,7 +28,8 @@
         justify-content: space-between;
     }
 
-    .left-part, .right-part {
+    .left-part,
+    .right-part {
         display: flex;
     }
 
@@ -46,6 +47,21 @@
             vertical-align: -4px;
             margin-right: 12px;
         }
+        .ver-list {
+            position: absolute;
+            height: 100px;
+            width: 208px;
+            background-color: #025275;
+            top: 58px;
+            border-bottom-left-radius: 10%;
+            border-bottom-right-radius: 10%;
+            span {
+                margin: 5px 0 0 5px;
+                width: 208px;
+                text-align: center;
+                color: #fff;
+            }
+        }
     }
     .nav-link {
         font-size: 18px;
@@ -62,6 +78,7 @@
             bottom: 0;
             border-radius: 3px;
             background: #eded63;
+            z-index: 30;
         }
     }
 
