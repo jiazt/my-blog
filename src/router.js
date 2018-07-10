@@ -15,6 +15,7 @@ import { inBrowser } from './utils'
 const index = () => import(/* webpackChunkName: "frontend-topics" */ './pages/frontend-index.vue')
 const article = () => import(/* webpackChunkName: "frontend-topics" */ './pages/frontend-article.vue')
 const about = () => import(/* webpackChunkName: "frontend-about" */ './pages/frontend-about.vue')
+const charts = () => import(/* webpackChunkName: "frontend-charts" */ './pages/frontend-charts.vue')
 const account = () => import(/* webpackChunkName: "frontend-user" */ './pages/frontend-user-account.vue')
 const password = () => import(/* webpackChunkName: "frontend-user" */ './pages/frontend-user-password.vue')
 
@@ -144,6 +145,7 @@ export function createRouter() {
             { name: 'search', path: '/search/:key', component: index },
             { name: 'article', path: '/article/:id', component: article, meta: { notKeepAlive: true } },
             { name: 'about', path: '/about', component: about },
+            { name: 'chart', path: '/chart', component: charts },
             { name: 'account', path: '/user/account', component: account, beforeEnter: guardRoute },
             { name: 'password', path: '/user/password', component: password, beforeEnter: guardRoute },
 
