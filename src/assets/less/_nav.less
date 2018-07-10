@@ -50,11 +50,18 @@
         .ver-list {
             position: absolute;
             height: 200px;
-            width: 208px;
+            // width: 208px;
             background-color: #025275;
-            top: 66px;
+            top: 67px;
+            border: 1px solid #fff;
             border-bottom-left-radius: 10%;
             border-bottom-right-radius: 10%;
+            .close {
+                margin-top: 10px;
+                margin-right: 10px;
+                top: 5px;
+                float: right;
+            }
             .more {
                 position: absolute;
                 top: 10px;
@@ -65,6 +72,7 @@
             }
             .list-item-first {
                 margin-top: 35px;
+                margin-left: 15px;
             }
         }
     }
@@ -84,6 +92,13 @@
             border-radius: 3px;
             background: #eded63;
             z-index: 30;
+        }
+    }
+    .nav-more {
+        &.current:after {
+            content: '';
+            position: absolute;
+            height: 0px;
         }
     }
 

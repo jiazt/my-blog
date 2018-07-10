@@ -6,14 +6,14 @@
                 <div class="main-nav">
                     <router-link to="/" active-class="current" exact class="nav-link"><i class="icon icon-nav-home"></i><span class="text">首页</span></router-link>
                     <router-link to="/trending/visit" active-class="current" class="nav-link"><i class="icon icon-nav-explore"></i><span class="text">热门</span></router-link>
-                    <router-link to="/about" active-class="current" class="nav-link" >
+                    <router-link to="" active-class="current" class="nav-link nav-more" >
                     <div @click="showList()">
-                        <i class="icon icon-nav-features"></i>
+                        <i class="icon icon-nav-more"></i>
                         <span class="text">更多</span>
                     </div>
                     </router-link>
-                    <div class="ver-list" @mouseleave="hideList()" v-show="listState">
-                        <div @click="hideList()" class="list-item-first">
+                    <div class="ver-list" v-show="listState">
+                        <div @click="hideList()" class="close">
                             <i class="icon icon-nav-close"></i>
                         </div>
                         <router-link to="/about" >
