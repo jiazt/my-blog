@@ -3,17 +3,19 @@
         <div class="wrap">
             <div class="left-part">
                 <router-link to="/" active-class="current" exact class="logo-link"><i class="icon icon-nav-logo"></i><span class="hidden">威震天</span></router-link>
-                <div class="main-nav" >
+                <div class="main-nav">
                     <router-link to="/" active-class="current" exact class="nav-link"><i class="icon icon-nav-home"></i><span class="text">首页</span></router-link>
                     <router-link to="/trending/visit" active-class="current" class="nav-link"><i class="icon icon-nav-explore"></i><span class="text">热门</span></router-link>
                     <router-link to="/about" active-class="current" class="nav-link" >
-                    <div @mouseenter="showList()" @mouseleave="hideList()">
+                    <div @click="showList()">
                         <i class="icon icon-nav-features"></i>
-                        <span class="text">关于</span>
+                        <span class="text">更多</span>
                     </div>
                     </router-link>
-                    <div class="ver-list" @mouseenter="showList()" @mouseleave="hideList()" v-show="listState">
-                        <span class="more">更多...</span>
+                    <div class="ver-list" @mouseleave="hideList()" v-show="listState">
+                        <div @click="hideList()" class="list-item-first">
+                            <i class="icon icon-nav-close"></i>
+                        </div>
                         <router-link to="/about" >
                             <div class="list-item-first">
                                 <i class="icon icon-nav-features"></i>
@@ -40,7 +42,7 @@ export default {
     data() {
         // listState = false
         return {
-            listState: true,
+            listState: false,
             isLogin: cookies.get('user')
         }
     },
@@ -56,11 +58,12 @@ export default {
             this.$router.replace('/search/' + qs)
         },
         showList() {
-            console.log('鼠标进入')
-            this.listState = true
+            console.log('展开详细目录')
+            this.listState = !this.listState
         },
         hideList() {
-            //this.listState = false;
+            console.log('关闭目录')
+            this.listState = false
         }
     }
 }
