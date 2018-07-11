@@ -11,6 +11,7 @@ import { createStore } from './store'
 import App from './App.vue'
 import * as filters from './filters'
 import titleMixin from './mixins'
+import Vcharts from 'v-charts'
 
 Vue.mixin(titleMixin)
 
@@ -19,6 +20,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.use(Vcharts)
 
 /* eslint-disable no-new */
 export function createApp() {

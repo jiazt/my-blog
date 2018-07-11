@@ -1,24 +1,45 @@
 <template>
-  <div>
+<div>
+    <h1>图表</h1>
     <ve-line :data="chartData"></ve-line>
-  </div>
+</div>
 </template>
 
 <script>
-import VeLine from 'v-charts/lib/line.common'
+// import VeLine from 'v-charts'
 export default {
-    components: { VeLine },
+    components: {
+        // VeLine
+    },
     data() {
         return {
             chartData: {
-                columns: ['date', 'PV'],
+                columns: ['日期', '销售额'],
                 rows: [
-                    { date: '01-01', PV: 1231 },
-                    { date: '01-02', PV: 1223 },
-                    { date: '01-03', PV: 2123 },
-                    { date: '01-04', PV: 4123 },
-                    { date: '01-05', PV: 3123 },
-                    { date: '01-06', PV: 7123 }
+                    {
+                        日期: '1月1日',
+                        销售额: 123
+                    },
+                    {
+                        日期: '1月2日',
+                        销售额: 1223
+                    },
+                    {
+                        日期: '1月3日',
+                        销售额: 2123
+                    },
+                    {
+                        日期: '1月4日',
+                        销售额: 4123
+                    },
+                    {
+                        日期: '1月5日',
+                        销售额: 3123
+                    },
+                    {
+                        日期: '1月6日',
+                        销售额: 7123
+                    }
                 ]
             }
         }
