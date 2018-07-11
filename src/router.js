@@ -145,7 +145,7 @@ export function createRouter() {
             { name: 'search', path: '/search/:key', component: index },
             { name: 'article', path: '/article/:id', component: article, meta: { notKeepAlive: true } },
             { name: 'about', path: '/about', component: about },
-            { name: 'chart', path: '/chart', component: charts },
+            { name: 'charts', path: '/charts', component: charts },
             { name: 'account', path: '/user/account', component: account, beforeEnter: guardRoute },
             { name: 'password', path: '/user/password', component: password, beforeEnter: guardRoute },
 
