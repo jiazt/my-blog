@@ -12,7 +12,7 @@ import App from './App.vue'
 import * as filters from './filters'
 import titleMixin from './mixins'
 import VueECharts from 'vue-echarts'
-// import 'echarts/lib/chart/pie'
+
 Vue.component('chart', VueECharts)
 
 // register component to use
