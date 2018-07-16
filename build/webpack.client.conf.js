@@ -10,6 +10,7 @@ const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+// const echartsGL = require('echarts-gl')
 
 const baseConfig = require('./webpack.base.conf')
 const config = require('../config')
@@ -49,6 +50,7 @@ const webpackConfig = merge(baseConfig, {
             'process.env': env
         }),
         new VueSSRClientPlugin()
+        // new echartsGL()
     ]
 })
 

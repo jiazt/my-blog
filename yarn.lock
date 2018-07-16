@@ -1578,6 +1578,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+claygl@^1.2.1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/claygl/-/claygl-1.2.2.tgz#3e7529095401bab9acc1296f3b281ea1253218ba"
+
 cli-boxes@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/cli-boxes/download/cli-boxes-1.0.0.tgz#4fa917c3e59c94a004cd61f8ee509da651687143"
@@ -2242,6 +2246,13 @@ ecdsa-sig-formatter@1.0.10:
 echarts-amap@1.0.0-rc.6:
   version "1.0.0-rc.6"
   resolved "https://registry.yarnpkg.com/echarts-amap/-/echarts-amap-1.0.0-rc.6.tgz#5782a74daee52ed44ce3f8f62577561783f09e16"
+
+echarts-gl@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/echarts-gl/-/echarts-gl-1.1.1.tgz#3df321cd4df7fee774e9a09e4dd29c9fd7e9104f"
+  dependencies:
+    claygl "^1.2.1"
+    zrender "^4.0.4"
 
 echarts@^4.0.4, echarts@^4.1.0:
   version "4.1.0"
@@ -6747,6 +6758,6 @@ yargs@^11.1.0:
     y18n "^3.2.1"
     yargs-parser "^9.0.2"
 
-zrender@4.0.4:
+zrender@4.0.4, zrender@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.0.4.tgz#910e60d888f00c9599073f23758dd23345fe48fd"

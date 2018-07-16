@@ -12,7 +12,7 @@
                         <span class="text">更多</span>
                     </div>
                 </router-link>
-                <div class="ver-list" v-show="listState">
+                <div class="ver-list" @mouseleave="hideList()" v-show="listState">
                     <div @click="hideList()" class="close">
                         <i class="icon icon-nav-close"></i>
                     </div>
