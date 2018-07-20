@@ -66,8 +66,6 @@ http://localhost:8080/api/backend
 ## loadtest 测试
 
 ```
-[Sat Jul 15 2017 10:53:43] INFO
-
 [Sat Jul 15 2017 10:53:43] INFO Mean latency:        11.3 ms
 [Sat Jul 15 2017 10:53:43] INFO
 [Sat Jul 15 2017 10:53:43] INFO Percentage of the requests served within a certain time
