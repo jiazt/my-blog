@@ -18,6 +18,7 @@ export default {
                         return x.data.des
                     }
                 },
+                backgroundColor: '#F5F5DC',
                 series: [
                     {
                         type: 'graph',
