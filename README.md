@@ -67,8 +67,7 @@ http://localhost:8080/api/backend
 
 ```
 latency:        11.3 ms
-served within a certain time
-[Sat Jul 15 2017 10:53:43] INFO   50%      8 ms
+
 [Sat Jul 15 2017 10:53:43] INFO   90%      17 ms
 [Sat Jul 15 2017 10:53:43] INFO   95%      27 ms
 [Sat Jul 15 2017 10:53:43] INFO   99%      38 ms
