@@ -66,9 +66,6 @@ http://localhost:8080/api/backend
 ## loadtest 测试
 
 ```
-latency:        11.3 ms
-
-[Sat Jul 15 2017 10:53:43] INFO   90%      17 ms
 [Sat Jul 15 2017 10:53:43] INFO   95%      27 ms
 [Sat Jul 15 2017 10:53:43] INFO   99%      38 ms
 [Sat Jul 15 2017 10:53:43] INFO  100%      438 ms (longest request)
